@@ -21,6 +21,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "grid_frequency.h"
+#include "stm32h7xx_it.h"
 
 /* USER CODE END Includes */
 
@@ -103,12 +105,49 @@ int main(void)
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
 
+	// ###########################################################################################################################################
+	// Activate port and interface clocks
+	__HAL_RCC_GPIOA_CLK_ENABLE();
+	__HAL_RCC_GPIOB_CLK_ENABLE();
+	__HAL_RCC_GPIOC_CLK_ENABLE();
+	__HAL_RCC_GPIOD_CLK_ENABLE();
+	__HAL_RCC_GPIOE_CLK_ENABLE();
+
+	// ###########################################################################################################################################
+	// Initialize Timer and grid frequency detection
+	__HAL_RCC_TIM15_CLK_ENABLE();
+	GPIO_TypeDef* gridFrequGpios[2]  = {T15CH1_GPIO_Port, nullptr};
+	uint32_t gridFrequPins[2]  = {T15CH1_Pin | T15CH2_Pin, 0};
+	uint32_t gridFrequPinsAf[2]  = {GPIO_AF4_TIM15, 0};
+	GridSyncTim gridSyncTim(TIM15, 180000000UL, &gridFrequGpios[0], gridFrequPins, gridFrequPinsAf);
+	gridSyncTimInit(gridSyncTim);
+
+	// ###########################################################################################################################################
+  	// Attach event handler for DMA filling and grid frequency detection
+  	EventHandler evHandler(10);
+	GridSync gridSync(gridSyncTim, 180000000UL);
+	EvGridSync evGridSync("Grid synchronisation", gridSync);
+  	evHandler.addEvent(&evGridSync);
+  	setEvGridSync(&evGridSync);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+		evHandler.process();
+
+		// Toggle LED during reconstructed zero crossing
+		static float dt, phi=-0.523598;
+		bool sign =  gridSync.sinGrid(dt, phi) > 0.0f;
+		static bool signLast = false;
+		if (sign && !signLast)
+		HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_SET);
+		else if (!sign && signLast)
+		HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_RESET);
+		signLast = sign;
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

@@ -1,0 +1,14 @@
+
+---------------------------------------------------------------------
+Pin-Belegung
+---------------------------------------------------------------------
+Pin  |  Funktion  | Status | Beschreibung
+---------------------------------------------------------------------
+
+PB0     Nucleo LD1  Use
+PE1     Nucleo LD2  Use
+PB14    Nucleo LD3  Use
+PC13    Nucleo BTN  Use
+
+PE5     TIM15_CH1   Use      Input capture (5V tolerant)
+PE6     TIM15_CH2   Use      Input capture (5V tolerant)

@@ -57,6 +57,9 @@ void PendSV_Handler(void);
 void SysTick_Handler(void);
 /* USER CODE BEGIN EFP */
 
+class EvGridSync;
+void setEvGridSync(EvGridSync* ev);
+
 /* USER CODE END EFP */
 
 #ifdef __cplusplus

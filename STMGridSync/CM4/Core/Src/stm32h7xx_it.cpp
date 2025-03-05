@@ -22,6 +22,14 @@
 #include "stm32h7xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+
+#include "grid_frequency.h"
+
+// C-Name mangling so that the linker finds the ISR functions
+#ifdef __cplusplus
+ extern "C" {
+#endif
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -41,6 +49,8 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
+
+ EvGridSync* evEvGridSync = nullptr;
 
 /* USER CODE END PV */
 
@@ -199,5 +209,28 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /* USER CODE BEGIN 1 */
+
+void setEvGridSync(EvGridSync* ev)
+{
+	evEvGridSync = ev;
+}
+
+void TIM15_IRQHandler(void)
+{
+	// Reading of CCR* Register clears the interrupt
+
+	// Capture/Compare 1 interrupt
+	if (TIM15->SR & TIM_SR_CC1IF) {
+		evEvGridSync->evO0(TIM15->CCR1, TIM15->CNT, GPIOE->IDR & (1<<5));
+	}
+	// Capture/Compare 2 interrupt
+	if (TIM15->SR & TIM_SR_CC2IF) {
+		evEvGridSync->evO1(TIM15->CCR2, TIM15->CNT, GPIOE->IDR & (1<<6));
+	}
+}
+
+#ifdef __cplusplus
+}
+#endif
 
 /* USER CODE END 1 */
