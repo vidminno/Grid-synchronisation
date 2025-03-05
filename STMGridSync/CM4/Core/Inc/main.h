@@ -28,8 +28,6 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32h7xx_hal.h"
-#include "stm32h7xx_nucleo.h"
-#include <stdio.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -59,6 +57,20 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define T15CH1_Pin GPIO_PIN_5
+#define T15CH1_GPIO_Port GPIOE
+#define T15CH2_Pin GPIO_PIN_6
+#define T15CH2_GPIO_Port GPIOE
+#define B0_Pin GPIO_PIN_13
+#define B0_GPIO_Port GPIOC
+#define LD1_Pin GPIO_PIN_0
+#define LD1_GPIO_Port GPIOB
+#define LD3_Pin GPIO_PIN_14
+#define LD3_GPIO_Port GPIOB
+#define USB_OTG_FS_PWR_EN_Pin GPIO_PIN_10
+#define USB_OTG_FS_PWR_EN_GPIO_Port GPIOD
+#define LD2_Pin GPIO_PIN_1
+#define LD2_GPIO_Port GPIOE
 
 /* USER CODE BEGIN Private defines */
 
