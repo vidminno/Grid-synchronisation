@@ -44,6 +44,18 @@ STMGridSync/**/*.metadata
 STMGridSync/**/*.settings
 STMGridSync/**/#*.launch
 
+#Build Directories
+STMGridSync/**/[Dd]ebug/
+STMGridSync/**/[Rr]elease/
+
+#Build Results
+STMGridSync/**/*.o
+STMGridSync/**/*.d
+STMGridSync/**/*.eep
+STMGridSync/**/*.elf
+STMGridSync/**/*.hex
+STMGridSync/**/*.map
+STMGridSync/**/*.srec
 
 ###########################################################################################
 ## Ignore LatexFiles
